@@ -10,23 +10,33 @@
 </head>
 <body>
     <div class="dashboard">
-        
         <!-- Sidebar Navigation -->
         <nav class="sidebar">
-            <h2> Add New Admin</h2>
+            <div style="
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border-radius: 8px;">
+            <h2 style="margin: 0;
+                font-size: 18px;
+                font-weight: 600;"> {{ Auth::user()->name }}</h2>
+        </div>
             <ul>
+                <li ><a href="{{url('/welcome/page')}}">Home</a></li>
                 <li class="active"><a href="{{url('/add/admin')}}">Add New Admin</a></li>
                 <li><a href="{{url('/manage/admins')}}">Manage Admins</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="/logout" id="logout-link"> Logout</a></li>
             </ul>
         </nav>
 
         <!-- Main Content -->
         <div class="main-content">
             <header>
-                <h1>Add New Admin</h1>
+                <h1>Create a New Admin</h1>
             </header>
-            <h1>Create a New User</h1>
+           
             @if (session('success'))
                 <p style="color: green;">{{ session('success') }}</p>
             @endif

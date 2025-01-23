@@ -37,4 +37,9 @@ class HomeAppointment extends Model
     {
         return $this->belongsTo(Investigation::class);
     }
+    public function investigations()
+    {
+        return $this->belongsToMany(Investigation::class, 'home_appointment_investigations')
+                    ->withPivot('cost', 'quantity'); // تأكد من إضافة 'cost' و 'quantity' في الـ pivot
+    }
 }

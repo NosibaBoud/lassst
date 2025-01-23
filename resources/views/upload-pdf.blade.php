@@ -18,11 +18,16 @@
                 </div>
                 <div class="navi">
                     <ul>
-                        
+                        <li><a href="/welcome"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Home</span></a></li>
                         <li><a href="/investigations"><i class="fa fa-tasks" aria-hidden="true"></i><span class="hidden-xs hidden-sm">investigations</span></a></li>
                         <li  class="active"><a href="/upload-pdf"><i class="fa fa-bar-chart" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Updload Result</span></a></li>
                         <li><a href="/appointments"><i class="fa fa-calendar" aria-hidden="true"></i><span class="hidden-xs hidden-sm">appointments</span></a></li>
-                        <li><a href="#"><i class="fa fa-log out" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Logout</span></a></li>
+                        <li>
+                            <a href="/logout" id="logout-link">
+                              <i class="fa fa-sign-out" aria-hidden="true"></i>
+                              <span class="hidden-xs hidden-sm">Logout</span>
+                            </a>
+                          </li>
                     </ul>
                 </div>
             </div>

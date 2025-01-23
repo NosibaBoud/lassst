@@ -8,22 +8,21 @@ use App\Models\UserInvestigation;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 class AppointmentController extends Controller
 {
     public function index()
     {
-        $users = User::with('homeAppointments', 'mytests.investigation')->get();
+        $users = User::with('homeAppointments', 'mytests')->get();
         return view('admindashboard.appointmentslist', compact('users'));
     }
     public function viewappo($id)
     {
         // Find the appointment by its ID
-        $appointment = HomeAppointment::find($id);
+        $appointment = HomeAppointment::with('investigations')->find($id);
     
         if (!$appointment) {
-            // Handle the case where the appointment is not found
-            return redirect()->route('appointments.index')->withErrors('Appointment not found.');
+            return redirect()->route('appointment.index')->withErrors(['error' => 'Appointment not found.']);
         }
     
         return view('admindashboard.appointment', compact('appointment'));
@@ -34,29 +33,39 @@ class AppointmentController extends Controller
     public function store(Request $request)
 {
     $userid = Auth::user()->id;
-
-    // Retrieve the investigation record for the current user
-    $userInvestigation = UserInvestigation::where('user_id', $userid)->first();
-    if (!$userInvestigation) {
-        return back()->withErrors(['error' => 'No investigation found for this user.']);
-    }
-
+    
+        $userInvestigations = UserInvestigation::where('user_id', $userid)->get();
+    
+        if ($userInvestigations->isEmpty()) {
+            return back()->withErrors(['error' => 'No investigations found for this user.']);
+        }
+    
+        $totalCost = $userInvestigations->sum(function ($userInvestigation) {
+            return $userInvestigation->investigation->price;
+        });
     // Create a new HomeAppointment instance
-    $info = new HomeAppointment;
-    $info->first_name = $request->input('first_name');
-    $info->last_name = $request->input('last_name');
-    $info->email = $request->input('email');
-    $info->phone_number = $request->input('phone_number');
-    $info->gender = $request->input('gender');
-    $info->date_of_birth ="{$request->year}-{$request->month}-{$request->day}";
-    $info->address = $request->input('address');
-    $info->date = $request->input('date');
-    $info->time = $request->input('time');
-    $info->user_id = $userid;
-    $info->investigation_id = $userInvestigation->id; // Assign the investigation_id
+    $appointment = new HomeAppointment();
+    $appointment->first_name = $request->input('first_name');
+    $appointment->last_name = $request->input('last_name');
+    $appointment->email = $request->input('email');
+    $appointment->phone_number = $request->input('phone_number');
+    $appointment->gender = $request->input('gender');
+    $appointment->date_of_birth = "{$request->year}-{$request->month}-{$request->day}";
+    $appointment->address = $request->input('address');
+    $appointment->date = $request->input('date');
+    $appointment->time = $request->input('time');
+    $appointment->user_id = $userid;
+    
+    $appointment->total_cost = $totalCost;
+    $appointment->save();
 
-    // Save the appointment
-    $info->save();
+    foreach ($userInvestigations as $userInvestigation) {
+        DB::table('home_appointment_investigations')->insert([
+            'home_appointment_id' => $appointment->id,
+            'investigation_id' => $userInvestigation->investigation_id,
+            'cost' => $userInvestigation->investigation->price, // افترض أن الحقل 'price' موجود في جدول التحاليل
+        ]);
+    }
 
     return view('make appointment')->with('success', 'Appointment created successfully!');
 }

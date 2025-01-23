@@ -19,19 +19,30 @@
                         <img src="http://jskrishna.com/work/merkury/images/circle-logo.png" alt="merkery_logo" class="visible-xs visible-sm circle-logo">
                     </a>
                 </div>
+                <div style="
+                color: white;
+                padding: 20px 40px;
+                text-align: center;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+                border-radius: 8px;">
+                <h1 style="margin: 0;
+                    font-size: 18px;
+                    font-weight: 600;"> {{ Auth::user()->name }}</h1>
+            </div>
                 <div class="navi">
                     <ul>
+                        <li><a href="/welcome"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Home</span></a></li>
                         <li><a href="/investigations"><i class="fa fa-tasks" aria-hidden="true"></i><span class="hidden-xs hidden-sm">investigations</span></a></li>
                         <li><a href="/upload-pdf"><i class="fa fa-bar-chart" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Updload Result</span></a></li>
                         <li  class="active"><a href="/appointments"><i class="fa fa-calendar" aria-hidden="true"></i><span class="hidden-xs hidden-sm">appointments</span></a></li>
-                        <li><a href="#"><i class="fa fa-log out" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Logout</span></a></li>
-                      
-                        @Auth
-                        <form method="POST" action="/logout">
-                         @csrf
-                         <button class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">logout</button>
-                        </form>
-                        @endauth
+                        
+                        <li>
+                            <a href="/logout" id="logout-link">
+                              <i class="fa fa-sign-out" aria-hidden="true"></i>
+                              <span class="hidden-xs hidden-sm">Logout</span>
+                            </a>
+                          </li>
                     </ul>
                    
                 </div>
@@ -96,10 +107,15 @@
                                 </div>
                                 <div class="info-row">
                                     <span class="label">Investigation(s):</span>
-                                    @foreach ($appointment->user->mytests as $test)
-                                        <br>
-                                        <span class="value">{{ $test->name }}</span>
-                                    @endforeach
+                                    <ul>
+                                        @foreach ($appointment->investigations as $investigation)
+                                            <li>
+                                                <strong>{{ $investigation->name }}</strong> 
+                                                - ${{ $investigation->pivot->cost }} 
+                                                (Quantity: {{ $investigation->pivot->quantity }})
+                                            </li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             </div>
                             

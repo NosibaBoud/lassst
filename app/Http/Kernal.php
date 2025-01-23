@@ -34,8 +34,9 @@ class Kernel extends HttpKernel
      *
      * @var array
      */
+   
     protected $routeMiddleware = [
-        // Laravel default middleware
-       
+        // Other middleware...
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
     ];
 }

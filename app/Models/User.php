@@ -26,18 +26,46 @@ class User extends Authenticatable
        'rolr',
         
     ];
- 
-    public function tests() {
-        return $this->hasMany(Investigation::class);
-    }
-    public function mytests()
-{
-    return $this->hasMany(UserInvestigation::class);
-}
 public function homeAppointments()
 {
     return $this->hasMany(HomeAppointment::class);
 }
+
+public function mytests()
+{
+    return $this->hasManyThrough(
+        Investigation::class,
+        UserInvestigation::class,
+        'user_id',         
+        'id',              
+        'id',              
+        'investigation_id'  
+    );
+}
+
+
+
+
+
+const ROLE_PATIENT = 'patient';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_SUPER_ADMIN = 'super_admin';
+
+    // Check user role
+    public function isPatient()
+    {
+        return $this->role === self::ROLE_PATIENT;
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->role === self::ROLE_SUPER_ADMIN;
+    }
 
     /**
      * The attributes that should be hidden for serialization.

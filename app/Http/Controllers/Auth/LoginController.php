@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+   // protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -50,11 +50,20 @@ class LoginController extends Controller
        $credentials = [$fieldType => $input, 'password' => $password];
 
        if (Auth::attempt($credentials)) {
-           return redirect()->intended('/'); // Redirect to the intended page
-       }
-
+        {
+            $role=Auth()->user()->role;
+            if($role=='patient'){
+                return view('home');
+            }
+        else if($role=='admin')
+        {
+            return view('admindashboard.welcomepage');
+        }
+        else return view('superadmin.welcome');
+            }
+        }
        return redirect()->back()->withErrors([
            'login' => 'These credentials do not match our records.',
        ]);}
-   
+       
 }

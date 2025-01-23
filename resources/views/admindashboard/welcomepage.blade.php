@@ -1,14 +1,14 @@
+  <!--navbar styles-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-<head>
-        <title>Appointment List</title>
-<link href="/css/appointmentstyle.css" rel="stylesheet">
-        <link href="/css/main.css" rel="stylesheet">
-    </head>
-  </head>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+<head>
+    <title>Admin Dashboard - Welcome</title>
+  
+<link href="/css/welcomepages.css" rel="stylesheet">
+  </head>
 <body class="home">
   
     <div class="container-fluid display-table">
@@ -32,10 +32,10 @@
             </div>
                 <div class="navi">
                     <ul>
-                        <li><a href="/welcome"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Home</span></a></li>
-                        <li><a href="/investigations"><i class="fa fa-tasks" aria-hidden="true"></i><span class="hidden-xs hidden-sm">investigations</span></a></li>
+                        <li class="active"><a href="/welcome"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Home</span></a></li>
+                        <li ><a href="/investigations"><i class="fa fa-tasks" aria-hidden="true"></i><span class="hidden-xs hidden-sm">investigations</span></a></li>
                         <li><a href="/upload-pdf"><i class="fa fa-bar-chart" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Updload Result</span></a></li>
-                        <li  class="active"><a href="/appointments"><i class="fa fa-calendar" aria-hidden="true"></i><span class="hidden-xs hidden-sm">appointments</span></a></li>
+                        <li><a href="/appointments"><i class="fa fa-calendar" aria-hidden="true"></i><span class="hidden-xs hidden-sm">appointments</span></a></li>
                         <li>
                             <a href="/logout" id="logout-link">
                               <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -61,22 +61,45 @@
                                     </button>
                                 </div>
                             </nav>
-   
-<body>
-    <div class="container">
-        <h1>Appointments</h1>
-        @foreach ($users as $user)
-        @foreach ($user->homeAppointments as $appointment)
-        <a href="{{ route('appointment.view', ['id' => $appointment->id]) }}">
-            <div class="appointment">
-                <div class="appointment-id">Appointment ID: {{ $appointment->id }}</div>
-                <div class="appointment-details">
-                    <div class="appointment-date">Date: {{ $appointment->date }}</div>
-                    <div class="appointment-time">Time: {{ $appointment->time }}</div>
-                </div>
-            </div>
-        </a>
-    @endforeach
-@endforeach
-</body>
 
+
+     
+    
+<body>
+    <div class="header">
+        <h1>Welcome to Admin Dashboard</h1>
+    </div>
+    <div class="container">
+        <div class="welcome">
+            <h1>Hello, Admin!</h1>
+            <p>Take control of your application with this modern and intuitive dashboard.</p>
+        </div>
+        <div class="dashboard-stats">
+            <div class="card">
+                <i class="fas fa-users"></i>
+                <h3>1,250</h3>
+                <p>Users</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-chart-line"></i>
+                <h3>87%</h3>
+                <p>Growth</p>
+            </div>
+           
+        </div>
+    </div>
+</body>
+</html>
+
+                        
+
+</div>
+</div>
+</header>
+</div>
+</div>
+</div>
+
+</div>
+
+</body>

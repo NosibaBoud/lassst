@@ -18,4 +18,12 @@ class Investigation extends Model
         'can_taken',
         
     ];
+    public function userInvestigations()
+    {
+        return $this->hasMany(UserInvestigation::class);
+    }
+    public function homeAppointments()
+{
+    return $this->belongsToMany(HomeAppointment::class, 'home_appointment_investigations');
+}
 }

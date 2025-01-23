@@ -16,7 +16,7 @@
     <div class="container">
 	<div class="row">
 		<div class="col-md-4 login-sec">
-		    <h2 class="text-center">Register Now</h2>
+		    <h2 class="text-center">Login Now</h2>
             <form method="POST" action="{{ route('login') }}">
             @csrf
 		    <form class="login-form">
@@ -37,7 +37,7 @@
 @enderror
 </div>
     <div class="form-check">
-    <button type="submit" class="btn btn-login float-right">   {{ __('login') }}</button>
+    <button type="submit" class="btn-login float-right">   {{ __('login') }}</button>
   </div>
   
 </form>
@@ -57,12 +57,9 @@
                             </div>
                         </div>
                     </div>
-                  
-                 
                 </div>
             </div>
         </div>
-        
         <style>
             /* Ensure all images are the same size */
             .carousel-inner {
@@ -76,11 +73,10 @@
             }
         
             /* Optional: Style adjustments for captions */
-           
-        
             .banner-sec {
                 margin: auto;
                 max-width: 100%;
+              
             }
         </style>
         

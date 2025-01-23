@@ -16,16 +16,18 @@ return new class extends Migration
            // $table->foreignId('investigation_id')->constrained('user_investigations')->onDelete('cascade');
           //$table->foreignId('user_investigation_id');
          // $table->foreignId('user_id');
+         $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // ربط بالجدول المستخدمين
             $table->string('gender');
            $table->foreignId('investigation_id');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');
             $table->string('address');
-            $table->integer('phone_number');
-           $table->string('date_of_birth');
-            $table->string('time');
-            $table->string('date');
+            $table->string('phone_number');
+            $table->date('date_of_birth');
+            $table->time('time');
+            $table->date('date');
+            $table->double('total_cost')->default(0); 
             $table->timestamps();
         });
     }
