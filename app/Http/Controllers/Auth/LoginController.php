@@ -41,13 +41,19 @@ class LoginController extends Controller
    // }
    public function login(Request $request)
    {
-       $input = $request->input('login');
-       $password = $request->input('password');
+    $credentials = $request->only('login', 'password');
 
-       // Determine if input is email or phone number
-       $fieldType = filter_var($input, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone_number';
+    // Check if login input is email or phone number
+    $fieldType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone_number';
 
-       $credentials = [$fieldType => $input, 'password' => $password];
+    if (Auth::attempt([$fieldType => $credentials['login'], 'password' => $credentials['password']])) {
+        // Login successful
+        return redirect()->intended('/welcome/page');
+    }
+
+    // Login failed, redirect back with error
+    return back()->withErrors(['login' => 'Invalid email/phone number or password.'])->withInput();
+
 
        if (Auth::attempt($credentials)) {
         {

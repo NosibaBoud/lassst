@@ -40,7 +40,15 @@
             @if (session('success'))
                 <p style="color: green;">{{ session('success') }}</p>
             @endif
-        
+            @if ($errors->any())
+            <div style="color: red;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
             <section class="content">
                     <form method="POST" action="/store/admin">
                       @csrf
@@ -53,13 +61,15 @@
                             <input type="text" id="name" name="name" placeholder="Enter admin name" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" placeholder="Enter admin email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="name">Phone Number:</label>
-                            <input type="text" id="phone_number" name="phone_number" placeholder="Enter admin phone number" required>
-                        </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" value="{{ old('email') }}" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone_number">Phone Number</label>
+                                <input type="text" name="phone_number" id="phone_number" value="{{ old('phone_number') }}" required>
+                            </div>
                         <div class="password-container">
                             <label for="name">Password:</label>
                             <input type="password" id="password" name="password" placeholder="Enter admin password" required>

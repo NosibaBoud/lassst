@@ -18,7 +18,7 @@ class SuperAdminSeeder extends Seeder
             'name'=>'super admin',
             'email'=>'super@gmail.com',
             'password'=>Hash::make('12345678'),
-            'phone_number'=>'0917741342',
+            'phone_number'=>'0917741341',
             'role'=>'superadmin',
 
         ]);
