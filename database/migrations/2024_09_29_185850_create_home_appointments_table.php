@@ -18,7 +18,7 @@ return new class extends Migration
          // $table->foreignId('user_id');
          $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // ربط بالجدول المستخدمين
             $table->string('gender');
-           $table->foreignId('investigation_id');
+        //    $table->foreignId('investigation_id');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email');

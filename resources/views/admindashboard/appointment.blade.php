@@ -112,7 +112,7 @@
                                             <li>
                                                 <strong>{{ $investigation->name }}</strong> 
                                                 - ${{ $investigation->pivot->cost }} 
-                                                (Quantity: {{ $investigation->pivot->quantity }})
+                                              
                                             </li>
                                         @endforeach
                                     </ul>

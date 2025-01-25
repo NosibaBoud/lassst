@@ -17,15 +17,29 @@ class UserController extends Controller
         return view('superadmin.addadmin');
     }
     public function store(Request $request){
-       $users=new User ;
-            $users->name = $request->input('name');
-            $users->email = $request->input('email');
-            $users->phone_number = $request->input('phone_number');
-            $users->password = $request->input('password');
-            $users->role=$request->input('role');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone_number' => 'required|string|unique:users,phone_number', 
+            'password' => 'required|min:8'       
+        ], [
+            'email.unique' => 'البريد الإلكتروني مسجل مسبقًا.',
+            'phone_number.unique' => 'رقم الهاتف مسجل مسبقًا.',
+            'password.min' => 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.',    
+        ]);
+    
+        $users = new User;
+        $users->name = $request->input('name');
+        $users->email = $request->input('email');
+        $users->phone_number = $request->input('phone_number');
+        $users->password = Hash::make($request->input('password')); 
+        $users->role = $request->input('role');
+    
         $users->save();
-        return redirect()->route('admin.show');
+    
+        return redirect()->route('admin.show')->with('success', 'تمت إضافة المشرف بنجاح.');
     }
+    
        // Show the edit form
        public function edit($id)
        {
@@ -36,22 +50,32 @@ class UserController extends Controller
        // Handle the update logic
        public function update(Request $request, $id)
        {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email', // Unique email validation
-            'phone_number' => 'required|string|unique:users,phone_number', // Unique phone number validation
-        ]);
-   // Update user information
-           $user = User::find($id);
+           $user = User::findOrFail($id);
+       
+           $request->validate([
+               'name' => 'required|string|max:255',
+               'email' => 'required|email|unique:users,email,'.$id,
+               'phone_number' => 'required|string|unique:users,phone_number,'.$id, 
+               'password' => 'nullable|min:8' 
+           ], [
+               'email.unique' => 'البريد الإلكتروني مسجل مسبقًا.',
+               'phone_number.unique' => 'رقم الهاتف مسجل مسبقًا.',
+               'password.min' => 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.', 
+           ]);
+       
            $user->name = $request->name;
            $user->email = $request->email;
            $user->phone_number = $request->phone_number;
-           $user->password = $request->password;
-   
+           
+           if ($request->password) {
+               $user->password = Hash::make($request->password);
+           }
+       
            $user->save();
-   
-           return redirect()->route('admin.show', $id)->with('success', 'User information updated successfully.');
+       
+           return redirect()->route('admin.show')->with('success', 'تم تحديث معلومات المشرف بنجاح.');
        }
+       
     public function delete($id){
         $user = User::find($id);
         if ($user) {

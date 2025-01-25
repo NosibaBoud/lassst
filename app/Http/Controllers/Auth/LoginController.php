@@ -40,36 +40,37 @@ class LoginController extends Controller
         //$this->middleware('auth')->only('logout');
    // }
    public function login(Request $request)
-   {
-    $credentials = $request->only('login', 'password');
+{
+    // Validate the input
+    $request->validate([
+        'login' => 'required|string',
+        'password' => 'required|string',
+    ]);
 
-    // Check if login input is email or phone number
+    // Determine whether the input is an email or phone number
     $fieldType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'phone_number';
 
-    if (Auth::attempt([$fieldType => $credentials['login'], 'password' => $credentials['password']])) {
-        // Login successful
-        return redirect()->intended('/welcome/page');
+    // Attempt to authenticate the user
+    if (Auth::attempt([$fieldType => $request->login, 'password' => $request->password])) {
+        // Authentication successful
+        $user = Auth::user(); // Get the authenticated user
+
+        // Redirect based on role
+        switch ($user->role) {
+            case 'patient':
+                return view('home'); // Render the patient's home view
+            case 'admin':
+                return view('admindashboard.welcomepage'); // Render the admin dashboard view
+            case 'superadmin':
+                return view('superadmin.welcome'); // Render the superadmin dashboard view
+            default:
+                // Handle cases where the role is undefined
+                Auth::logout();
+                return redirect()->route('login')->withErrors(['login' => 'Unauthorized role.']);
+        }
+    } else {
+        // If authentication fails, redirect back with an error
+        return back()->withErrors(['login' => 'Invalid email/phone number or password.'])->withInput();
     }
-
-    // Login failed, redirect back with error
-    return back()->withErrors(['login' => 'Invalid email/phone number or password.'])->withInput();
-
-
-       if (Auth::attempt($credentials)) {
-        {
-            $role=Auth()->user()->role;
-            if($role=='patient'){
-                return view('home');
-            }
-        else if($role=='admin')
-        {
-            return view('admindashboard.welcomepage');
-        }
-        else return view('superadmin.welcome');
-            }
-        }
-       return redirect()->back()->withErrors([
-           'login' => 'These credentials do not match our records.',
-       ]);}
-       
+}
 }
